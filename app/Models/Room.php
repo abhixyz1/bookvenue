@@ -15,6 +15,7 @@ class Room extends Model
 
     protected $casts = [
         'facilities' => 'array',
+        'capacity' => 'integer',
         'price_hour' => 'decimal:2',
         'price_day'  => 'decimal:2',
     ];

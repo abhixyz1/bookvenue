@@ -23,12 +23,12 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         $bookings = Booking::where('user_id', $user->id)
             ->with(['room.floor'])
             ->latest()
             ->paginate(10);
-        
+
         $stats = [
             'total_bookings' => Booking::where('user_id', $user->id)->count(),
             'pending_bookings' => Booking::where('user_id', $user->id)->where('status', 'pending')->count(),
@@ -36,7 +36,7 @@ class DashboardController extends Controller
             'rejected_bookings' => Booking::where('user_id', $user->id)->where('status', 'rejected')->count(),
         ];
 
-        return view('dashboard.index', compact('bookings', 'stats', 'user'));
+        return view('dashboard.user', compact('bookings', 'stats', 'user'));
     }
 
     /**

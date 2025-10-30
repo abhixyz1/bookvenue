@@ -76,7 +76,27 @@ class AdminDashboardController extends Controller
      */
     public function users()
     {
-        $users = User::latest()->paginate(20);
+        $users = User::withCount('bookings')->latest()->paginate(20);
         return view('admin.users', compact('users'));
+    }
+
+    /**
+     * Approve a booking
+     */
+    public function approveBooking(Booking $booking)
+    {
+        $booking->update(['status' => 'approved']);
+
+        return back()->with('success', 'Booking #' . $booking->id . ' has been approved successfully.');
+    }
+
+    /**
+     * Reject a booking
+     */
+    public function rejectBooking(Booking $booking)
+    {
+        $booking->update(['status' => 'rejected']);
+
+        return back()->with('success', 'Booking #' . $booking->id . ' has been rejected.');
     }
 }

@@ -29,13 +29,20 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 // User Dashboard Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/booking/create', [DashboardController::class, 'showBookingForm'])->name('booking.create');
+    
+    // Booking routes with consistent naming
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::get('/booking/create', [DashboardController::class, 'showBookingForm'])->name('booking.create');
+        Route::post('/booking/store', [DashboardController::class, 'storeBooking'])->name('booking.store');
+    });
 });
 
 // Admin Dashboard Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/bookings', [AdminDashboardController::class, 'bookings'])->name('bookings');
+    Route::patch('/bookings/{booking}/approve', [AdminDashboardController::class, 'approveBooking'])->name('bookings.approve');
+    Route::patch('/bookings/{booking}/reject', [AdminDashboardController::class, 'rejectBooking'])->name('bookings.reject');
     Route::get('/rooms', [AdminDashboardController::class, 'rooms'])->name('rooms');
     Route::get('/users', [AdminDashboardController::class, 'users'])->name('users');
 });

@@ -44,7 +44,7 @@ class DashboardController extends Controller
      */
     public function showBookingForm()
     {
-        $rooms = Room::with('floor')->where('is_active', true)->get();
+        $rooms = \App\Models\Room::with('floor')->get();
         return view('dashboard.booking-create', compact('rooms'));
     }
 
